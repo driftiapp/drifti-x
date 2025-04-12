@@ -1,0 +1,33 @@
+name: Security Scan
+
+on:
+  pull_request:
+    branches: [ master, main ]
+  push:
+    branches: [ master, main ]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run npm audit
+        run: npm audit
+        
+      - name: Check for known vulnerabilities
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+        
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2 
