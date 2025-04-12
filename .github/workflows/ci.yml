@@ -1,88 +1,37 @@
-name: Drifti X Local Development
+name: CI
 
 on:
   push:
-    branches: [ main, staging ]
+    branches: [ main, master ]
   pull_request:
-    branches: [ main, staging ]
-
-env:
-  NODE_VERSION: '20'
-  MONGODB_VERSION: 'latest'
-  TEST_DB: 'drifti_test'
-  LOG_LEVEL: 'error'
-  CORS_ORIGIN: 'http://localhost:3000'
-  RATE_LIMIT_WINDOW_MS: 900000
-  RATE_LIMIT_MAX: 100
+    branches: [ main, master ]
 
 jobs:
   test:
-    name: Test
     runs-on: ubuntu-latest
-    services:
-      mongodb:
-        image: mongo:${{ env.MONGODB_VERSION }}
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "echo 'db.runCommand(\"ping\").ok' | mongosh localhost:27017/${{ env.TEST_DB }} --quiet"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - uses: actions/checkout@v4
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '20'
           cache: 'npm'
           
       - name: Install dependencies
         run: npm ci
         
       - name: Run tests
-        run: npm run test:coverage
-        env:
-          NODE_ENV: test
-          MONGODB_URI: mongodb://localhost:27017/${{ env.TEST_DB }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          LOG_LEVEL: ${{ env.LOG_LEVEL }}
-          CORS_ORIGIN: ${{ env.CORS_ORIGIN }}
-          RATE_LIMIT_WINDOW_MS: ${{ env.RATE_LIMIT_WINDOW_MS }}
-          RATE_LIMIT_MAX: ${{ env.RATE_LIMIT_MAX }}
-          
-      - name: Upload test coverage
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/lcov.info
-          fail_ci_if_error: true
-
-  lint:
-    name: Lint & Type Check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          
-      - name: Install dependencies
-        run: npm ci
+        run: npm test
         
       - name: Run linting
         run: npm run lint
         
-      - name: Run type checking
+      - name: Type check
         run: npm run type-check
 
-  local-dev:
-    name: Local Development
+  build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -90,20 +39,17 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: '20'
           cache: 'npm'
           
       - name: Install dependencies
         run: npm ci
         
-      - name: Start local development server
-        run: npm run dev
-        env:
-          NODE_ENV: development
-          PORT: 3000
-          MONGODB_URI: mongodb://localhost:27017/drifti_dev
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          LOG_LEVEL: debug
-          CORS_ORIGIN: http://localhost:3000
-          RATE_LIMIT_WINDOW_MS: 900000
-          RATE_LIMIT_MAX: 100 
+      - name: Build
+        run: npm run build
+        
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: dist/ 
