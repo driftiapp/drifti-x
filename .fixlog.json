@@ -1,0 +1,385 @@
+{
+  "migrations": [
+    {
+      "timestamp": "2024-03-15T12:00:00Z",
+      "batch": "test-migration",
+      "files": [
+        {
+          "file": "setup.ts",
+          "source": "src/tests/",
+          "destination": "__tests__/",
+          "changes": [
+            "Migrated test setup file to new location",
+            "Updated imports to match new structure",
+            "Maintained MongoDB memory server configuration",
+            "Preserved mock configurations"
+          ],
+          "status": "completed"
+        },
+        {
+          "file": "analytics.controller.test.ts",
+          "source": "src/tests/controllers/",
+          "destination": "__tests__/controllers/",
+          "changes": [
+            "Migrated controller tests to new location",
+            "Updated imports to use src/ prefix",
+            "Enhanced test coverage for all endpoints",
+            "Improved error handling test cases",
+            "Added proper mocking for logger and Sentry",
+            "Fixed linting issues by adding return types and proper type annotations"
+          ],
+          "status": "completed"
+        },
+        {
+          "file": "analytics.service.test.ts",
+          "source": "src/tests/services/",
+          "destination": "__tests__/services/",
+          "changes": [
+            "Migrated service tests to new location",
+            "Updated imports to use src/ prefix",
+            "Enhanced test coverage for all methods",
+            "Added tests for empty results and error cases",
+            "Fixed linting issues by adding return types and proper type annotations",
+            "Removed unused imports and improved mock data typing"
+          ],
+          "status": "completed"
+        }
+      ],
+      "validation": {
+        "linting": "fixed",
+        "typeCheck": "passed",
+        "tests": "not_run"
+      },
+      "notes": "Successfully migrated test files to new __tests__ directory structure and fixed all linting issues"
+    },
+    {
+      "file": "src/utils/errorHandler.ts",
+      "changes": [
+        "Removed duplicate AppError class",
+        "Added ErrorCode enum usage",
+        "Improved error metadata handling",
+        "Enhanced error handling middleware",
+        "Added proper type definitions",
+        "Improved error logging"
+      ],
+      "status": "completed",
+      "timestamp": "2024-03-21T10:00:00Z"
+    },
+    {
+      "file": "src/controllers/smokeShop.controller.ts",
+      "changes": [
+        "Identified duplicate interfaces that need to be moved to types",
+        "Found business logic mixed in controller layer",
+        "Noted inconsistent error handling",
+        "Found missing type definitions",
+        "Identified inconsistent response format"
+      ],
+      "status": "pending",
+      "timestamp": "2024-03-21T10:30:00Z"
+    },
+    {
+      "file": "src/services/smokeShop.service.ts",
+      "changes": [
+        "Identified duplicate interfaces that need to be moved to types",
+        "Found inconsistent error handling",
+        "Noted missing type definitions",
+        "Found inconsistent return types",
+        "Identified potential improvements to singleton pattern"
+      ],
+      "status": "pending",
+      "timestamp": "2024-03-21T10:45:00Z"
+    },
+    {
+      "file": "src/types/smokeShop.ts",
+      "changes": [
+        "Created new types file for smoke shop",
+        "Defined IProduct interface",
+        "Defined IOpeningHours interface",
+        "Defined IOrderItem interface",
+        "Defined IDeliveryAddress interface",
+        "Defined IOrder interface",
+        "Defined ISmokeShop interface"
+      ],
+      "status": "completed",
+      "timestamp": "2024-03-21T11:00:00Z"
+    },
+    {
+      "timestamp": "2024-03-21T12:00:00Z",
+      "batch": "directory-consolidation",
+      "files": [
+        {
+          "file": "middleware/",
+          "source": "src/middleware/",
+          "destination": "src/middlewares/",
+          "changes": [
+            "Consolidated middleware files into middlewares/ directory",
+            "Merged rate limiter implementations",
+            "Kept more comprehensive error handler",
+            "Removed duplicate ride tracking middleware"
+          ],
+          "status": "completed"
+        },
+        {
+          "file": "tests/",
+          "source": "src/tests/",
+          "destination": "__tests__/",
+          "changes": [
+            "Consolidated test files into __tests__/ directory",
+            "Moved websocket tests",
+            "Moved repository tests",
+            "Moved integration tests",
+            "Moved utility tests",
+            "Maintained test directory structure"
+          ],
+          "status": "completed"
+        }
+      ],
+      "validation": {
+        "linting": "fixed",
+        "typeCheck": "passed",
+        "tests": "not_run"
+      },
+      "notes": "Successfully consolidated middleware and test directories, removing duplicates and maintaining the best implementations"
+    }
+  ],
+  "changes": [
+    {
+      "file": "analytics.controller.ts",
+      "change": "Migrated to src/controllers/, added proper authorization, improved error handling and logging"
+    },
+    {
+      "file": "analytics.service.ts",
+      "change": "Migrated to src/services/, implemented proper business logic separation"
+    },
+    {
+      "file": "analytics.ts",
+      "change": "Migrated to src/types/, defined interfaces and validation schemas"
+    },
+    {
+      "file": "analytics.controller.test.ts",
+      "change": "Migrated to __tests__/controllers/, added comprehensive test coverage"
+    },
+    {
+      "file": "analytics.service.test.ts",
+      "change": "Migrated to __tests__/services/, added service layer tests"
+    },
+    {
+      "file": "src/controllers/analytics.controller.ts",
+      "change": "Removed unused imports, simplified error handling, removed Sentry integration, and removed performance logging wrapper"
+    },
+    {
+      "file": "src/tests/controllers/analytics.controller.test.ts",
+      "change": "Removed unused mocks and imports, simplified test setup"
+    },
+    {
+      "file": "src/tests/services/analytics.service.test.ts",
+      "change": "Added return types to mock functions, removed unused variables"
+    },
+    {
+      "file": "src/controllers/notification.controller.ts",
+      "change": "Migrated to new architecture: added Zod validation, improved type safety, removed performance logging, added proper error handling, and fixed role-based access"
+    },
+    {
+      "file": "backend/src/middlewares/error.middleware.ts",
+      "change": "Migrated error middleware with improved type safety, added ErrorResponse interface, and centralized error handling"
+    },
+    {
+      "file": "backend/src/config/config.ts",
+      "change": "Created centralized config file with environment variables and default values"
+    },
+    {
+      "file": "backend/src/types/errors.ts",
+      "change": "Created custom error types with proper inheritance and type safety"
+    },
+    {
+      "file": "src/index.ts",
+      "change": "Removed Sentry integration, improved error handling, and aligned with new architecture"
+    },
+    {
+      "file": "src/app.ts",
+      "change": "Updated to use centralized config, improved error handling, and added logging"
+    },
+    {
+      "file": "src/utils/errorHandler.ts",
+      "type": "update",
+      "description": "Updated error handling utility with improved type safety and error handling",
+      "timestamp": "2024-03-21T10:00:00Z"
+    },
+    {
+      "file": "src/middleware/errorHandler.ts",
+      "change": "Created error handler middleware with improved error handling and logging"
+    },
+    {
+      "file": "src/middleware/rateLimiter.ts",
+      "change": "Created rate limiter middleware with configurable limits"
+    },
+    {
+      "file": "src/middleware/rideTracking.middleware.ts",
+      "change": "Created ride tracking middleware with request timing and logging"
+    },
+    {
+      "file": "src/config/swagger.ts",
+      "change": "Created swagger configuration with API documentation setup"
+    },
+    {
+      "file": "src/config/config.ts",
+      "change": "Created centralized config with environment variables and default values"
+    },
+    {
+      "file": "src/routes/liquorDelivery.routes.ts",
+      "change": "Created liquor delivery routes with proper authentication and role-based access"
+    },
+    {
+      "file": "src/websockets/websocket.service.ts",
+      "change": "Improved type safety with IWebSocketEvent, enhanced error handling, and added proper logging"
+    },
+    {
+      "file": "src/types/websocket.ts",
+      "change": "Added IWebSocketEvent interface, improved type safety for broadcastToRoom, updated NotificationType enum, and enhanced ILocation and INotification interfaces"
+    },
+    {
+      "file": "src/utils/logger.ts",
+      "change": "Removed performance logging wrapper, added proper type definitions, integrated with centralized config, and improved error handling with file rotation"
+    },
+    {
+      "file": "src/utils/AppError.ts",
+      "change": "Added ErrorCode enum, ErrorMetadata interface, improved error handling with fingerprinting, and added proper type definitions"
+    },
+    {
+      "file": "src/controllers/smokeShop.controller.ts",
+      "type": "analysis",
+      "description": "Identified several issues that need to be addressed during migration",
+      "timestamp": "2024-03-21T10:30:00Z"
+    },
+    {
+      "file": "src/services/smokeShop.service.ts",
+      "type": "analysis",
+      "description": "Identified several issues that need to be addressed during migration",
+      "timestamp": "2024-03-21T10:45:00Z"
+    },
+    {
+      "file": "src/types/smokeShop.ts",
+      "type": "create",
+      "description": "Created centralized types file for smoke shop related interfaces",
+      "timestamp": "2024-03-21T11:00:00Z"
+    },
+    {
+      "file": "src/middlewares/rate-limiter.middleware.ts",
+      "change": "Updated to use config file for rate limit settings and added health check skip logic"
+    },
+    {
+      "file": "__tests__/websockets/websocket.service.test.ts",
+      "change": "Moved from src/tests/websockets/ to new location"
+    },
+    {
+      "file": "__tests__/repositories/rideshare.repository.test.ts",
+      "change": "Moved from src/tests/repositories/ to new location"
+    },
+    {
+      "file": "__tests__/integration/smokeShop.integration.test.ts",
+      "change": "Moved from src/tests/integration/ to new location"
+    },
+    {
+      "file": "__tests__/integration/auth.integration.test.ts",
+      "change": "Moved from src/tests/integration/ to new location"
+    },
+    {
+      "file": "__tests__/utils/authUtils.ts",
+      "change": "Moved from src/tests/utils/ to new location"
+    },
+    {
+      "file": "__tests__/utils/testUtils.ts",
+      "change": "Moved from src/tests/utils/ to new location"
+    },
+    {
+      "file": "src/config/config.ts",
+      "type": "update",
+      "description": "Added Config interface with proper type definitions including rate limit configuration",
+      "timestamp": "2024-03-21T13:00:00Z"
+    },
+    {
+      "timestamp": "2024-03-21T14:00:00Z",
+      "batch": "type-system-cleanup",
+      "files": [
+        {
+          "file": "src/types/enums.ts",
+          "type": "create",
+          "changes": [
+            "Created centralized enums file",
+            "Consolidated NotificationType, NotificationChannel, UserRole, OrderStatus, and ErrorCode enums"
+          ],
+          "status": "completed"
+        },
+        {
+          "file": "src/types/notification.ts",
+          "type": "update",
+          "changes": [
+            "Unified notification types between websocket and regular notifications",
+            "Removed duplicate type definitions",
+            "Improved type consistency"
+          ],
+          "status": "completed"
+        },
+        {
+          "file": "src/types/error.ts",
+          "type": "update",
+          "changes": [
+            "Unified error response types",
+            "Added proper error metadata types",
+            "Improved type safety with discriminated unions"
+          ],
+          "status": "completed"
+        },
+        {
+          "file": "src/types/index.ts",
+          "type": "update",
+          "changes": [
+            "Organized type exports by category",
+            "Fixed export conflicts",
+            "Improved type organization"
+          ],
+          "status": "completed"
+        }
+      ],
+      "validation": {
+        "linting": "in_progress",
+        "typeCheck": "pending",
+        "tests": "not_run"
+      },
+      "notes": "Consolidated and improved type system organization, fixed duplicate types, and improved type safety"
+    },
+    {
+      "timestamp": "2024-03-21T15:00:00Z",
+      "batch": "type-system-cleanup",
+      "files": [
+        {
+          "file": "src/types/services.d.ts",
+          "type": "update",
+          "changes": [
+            "Removed module declarations",
+            "Exported service interfaces directly",
+            "Improved type organization",
+            "Fixed export conflicts"
+          ],
+          "status": "completed"
+        },
+        {
+          "file": "src/types/index.ts",
+          "type": "update",
+          "changes": [
+            "Fixed export conflicts",
+            "Added specific type exports",
+            "Improved type organization"
+          ],
+          "status": "completed"
+        }
+      ],
+      "validation": {
+        "linting": "fixed",
+        "typeCheck": "pending",
+        "tests": "not_run"
+      },
+      "notes": "Fixed export conflicts in type system and improved service type definitions"
+    }
+  ]
+}

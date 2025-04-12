@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "drifti-x-prod",
+    "staging": "drifti-x-staging",
+    "production": "drifti-x-prod"
+  }
+} 

@@ -1,0 +1,39 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run fixer in check-only mode
+echo "Running code fixer in check-only mode..."
+npx ts-node scripts/fix-background.ts --check-only
+
+# If the fixer found issues that need manual fixing, exit with error
+if [ $? -ne 0 ]; then
+  echo "❌ Code fixer found issues that need manual attention."
+  echo "Please fix these issues before pushing."
+  exit 1
+fi
+
+# Check for high-risk files
+echo "Checking for high-risk files..."
+HIGH_RISK_FILES=$(npx ts-node scripts/analyze-fixes.ts --check-risk)
+
+if [ -n "$HIGH_RISK_FILES" ]; then
+  echo "⚠️ High-risk files detected:"
+  echo "$HIGH_RISK_FILES"
+  echo "Please review these files before pushing."
+  read -p "Do you want to continue pushing? (y/n) " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    exit 1
+  fi
+fi
+
+# Run tests
+echo "Running tests..."
+npm test
+
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed. Please fix the tests before pushing."
+  exit 1
+fi
+
+echo "✅ All checks passed. Pushing changes..." 

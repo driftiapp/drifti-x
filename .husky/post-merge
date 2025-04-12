@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Run fixer to check for merge conflicts and issues
+echo "Checking for merge-related issues..."
+npx ts-node scripts/fix-background.ts --check-merge
+
+# Run analysis to highlight new risks
+echo "Analyzing post-merge state..."
+npx ts-node scripts/analyze-fixes.ts --post-merge 

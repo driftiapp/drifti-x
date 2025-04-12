@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Update fix log with any new fixes
+echo "Updating fix log..."
+npx ts-node scripts/fix-background.ts --update-log
+
+# Run analysis to check for new risks
+echo "Running fix analysis..."
+npx ts-node scripts/analyze-fixes.ts 

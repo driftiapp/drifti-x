@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Prevent rebasing of the main branch
+if [ "$1" = "main" ]; then
+  echo "You cannot rebase the main branch!"
+  exit 1
+fi 
