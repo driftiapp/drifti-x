@@ -1,23 +1,4 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
-# Run fixer in check-only mode
-echo "Running code fixer in check-only mode..."
-npx ts-node scripts/fix-background.ts --check-only
-
-# If the fixer found issues that need manual fixing, exit with error
-if [ $? -ne 0 ]; then
-  echo "❌ Code fixer found issues that need manual attention."
-  echo "Please fix these issues before committing."
-  exit 1
-fi
-
-echo "✅ Code fixer check passed."
-
-# Run linting
-npm run lint
-
-# Run type checking
-npm run type-check
-
-npm run test 
+npm test

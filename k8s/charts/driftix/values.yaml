@@ -1,0 +1,96 @@
+# Global configuration
+global:
+  appName: driftix
+  environment: production
+
+# Backend configuration
+backend:
+  replicaCount: 2
+  image:
+    repository: driftix-backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 3000
+  livenessProbe:
+    path: /api/health
+    initialDelaySeconds: 30
+    periodSeconds: 10
+  readinessProbe:
+    path: /api/health
+    initialDelaySeconds: 5
+    periodSeconds: 5
+
+# Frontend configuration
+frontend:
+  replicaCount: 2
+  image:
+    repository: driftix-frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 3000
+
+# Redis configuration
+redis:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+# MongoDB configuration
+mongodb:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: nginx
+  hosts:
+    - host: driftix.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: driftix-tls
+      hosts:
+        - driftix.example.com
+
+# Autoscaling configuration
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80 

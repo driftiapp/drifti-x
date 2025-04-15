@@ -1,0 +1,18 @@
+import express from 'express';
+import cors from 'cors';
+import { errorHandler } from './middleware/errorHandler';
+import smokeShopRoutes from './routes/smokeShop.routes';
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use('/api/smoke-shop', smokeShopRoutes);
+
+// Error handling
+app.use(errorHandler);
+
+export default app; 

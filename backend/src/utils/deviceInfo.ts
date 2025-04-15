@@ -1,0 +1,144 @@
+import { UAParser } from 'ua-parser-js';
+import axios from 'axios';
+import { logger } from './logger';
+
+interface LocationInfo {
+  city: string;
+  country: string;
+  region: string;
+  timezone: string;
+  org: string;
+}
+
+interface DeviceInfo {
+  type: string;
+  os: {
+    name: string;
+    version: string;
+  };
+  browser: {
+    name: string;
+    version: string;
+  };
+  platform: string;
+  language?: string;
+  screen?: {
+    width: number;
+    height: number;
+  };
+}
+
+interface CachedLocation {
+  data: LocationInfo;
+  timestamp: number;
+}
+
+export class DeviceInfoService {
+  private static instance: DeviceInfoService;
+  private ipInfoToken: string;
+  private locationCache: Map<string, CachedLocation>;
+  private readonly CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+  private constructor() {
+    this.ipInfoToken = process.env.IPINFO_TOKEN || '';
+    this.locationCache = new Map();
+  }
+
+  public static getInstance(): DeviceInfoService {
+    if (!DeviceInfoService.instance) {
+      DeviceInfoService.instance = new DeviceInfoService();
+    }
+    return DeviceInfoService.instance;
+  }
+
+  public async getLocationInfo(ip: string): Promise<LocationInfo | null> {
+    try {
+      if (!this.ipInfoToken) {
+        logger.warn('IPINFO_TOKEN not set, skipping geolocation');
+        return null;
+      }
+
+      // Check cache first
+      const cached = this.locationCache.get(ip);
+      if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
+        return cached.data;
+      }
+
+      const response = await axios.get(`https://ipinfo.io/${ip}?token=${this.ipInfoToken}`);
+      const { city, country, region, timezone, org } = response.data;
+
+      const locationInfo: LocationInfo = {
+        city: city || 'Unknown',
+        country: country || 'Unknown',
+        region: region || 'Unknown',
+        timezone: timezone || 'Unknown',
+        org: org || 'Unknown'
+      };
+
+      // Update cache
+      this.locationCache.set(ip, {
+        data: locationInfo,
+        timestamp: Date.now()
+      });
+
+      return locationInfo;
+    } catch (error) {
+      logger.error('Error getting location info:', error);
+      return null;
+    }
+  }
+
+  public getDeviceInfo(userAgent: string, headers: Record<string, string> = {}): DeviceInfo {
+    try {
+      const parser = new UAParser(userAgent);
+      const result = parser.getResult();
+      const { device, os, browser } = result;
+
+      return {
+        type: device.type || 'unknown',
+        os: {
+          name: os.name || 'Unknown',
+          version: os.version || 'Unknown'
+        },
+        browser: {
+          name: browser.name || 'Unknown',
+          version: browser.version || 'Unknown'
+        },
+        platform: os.name ? `${os.name} ${os.version || ''}`.trim() : 'Unknown',
+        language: headers['accept-language']?.split(',')[0] || 'Unknown',
+        screen: headers['screen-resolution'] ? {
+          width: parseInt(headers['screen-resolution'].split('x')[0]),
+          height: parseInt(headers['screen-resolution'].split('x')[1])
+        } : undefined
+      };
+    } catch (error) {
+      logger.error('Error parsing device info:', error);
+      return {
+        type: 'unknown',
+        os: { name: 'Unknown', version: 'Unknown' },
+        browser: { name: 'Unknown', version: 'Unknown' },
+        platform: 'Unknown',
+        language: 'Unknown'
+      };
+    }
+  }
+
+  public getClientIp(req: any): string {
+    // Try to get IP from various headers
+    const ip = req.headers['x-forwarded-for']?.split(',')[0] || 
+               req.headers['x-real-ip'] || 
+               req.connection?.remoteAddress || 
+               req.socket?.remoteAddress || 
+               req.connection?.socket?.remoteAddress;
+
+    return ip || 'unknown';
+  }
+
+  public clearCache(): void {
+    this.locationCache.clear();
+  }
+
+  public getCacheSize(): number {
+    return this.locationCache.size;
+  }
+} 

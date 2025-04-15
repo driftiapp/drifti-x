@@ -1,0 +1,24 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running pre-commit checks..."
+
+# Run linting
+npm run lint || {
+  echo "❌ Linting failed"
+  exit 1
+}
+
+# Run type checking
+npm run type-check || {
+  echo "❌ Type checking failed"
+  exit 1
+}
+
+# Run duplicate checker
+ts-node scripts/checkDuplicates.ts || {
+  echo "❌ Duplicate files found"
+  exit 1
+}
+
+echo "✅ All checks passed" 

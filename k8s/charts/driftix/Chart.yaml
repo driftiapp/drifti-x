@@ -1,0 +1,9 @@
+apiVersion: v2
+name: driftix
+description: A Helm chart for DriftiX SaaS Platform
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+maintainers:
+  - name: DriftiX Team
+    email: team@driftix.com 

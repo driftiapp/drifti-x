@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="120px" height="40px" viewBox="0 0 120 40" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect fill="#000000" x="0" y="0" width="120" height="40" rx="6"></rect>
+        <g transform="translate(8.000000, 8.000000)" fill="#FFFFFF">
+            <path d="M10.5,0.5 C11.3,0.5 12,1.2 12,2 C12,2.8 11.3,3.5 10.5,3.5 C9.7,3.5 9,2.8 9,2 C9,1.2 9.7,0.5 10.5,0.5 Z M9,4 L12,4 L12,12 L9,12 L9,4 Z"></path>
+            <path d="M16,4 L19,4 L19,12 L16,12 L16,4 Z M16,0 L19,0 L19,2 L16,2 L16,0 Z"></path>
+            <path d="M22,0 L25,0 L25,12 L22,12 L22,0 Z"></path>
+            <path d="M28,0 L31,0 L31,2 L28,2 L28,0 Z M28,4 L31,4 L31,12 L28,12 L28,4 Z"></path>
+            <path d="M34,0 L37,0 L37,2 L34,2 L34,0 Z M34,4 L37,4 L37,12 L34,12 L34,4 Z"></path>
+            <path d="M40,0 L43,0 L43,12 L40,12 L40,0 Z"></path>
+            <path d="M46,0 L49,0 L49,2 L46,2 L46,0 Z M46,4 L49,4 L49,12 L46,12 L46,4 Z"></path>
+            <path d="M52,0 L55,0 L55,12 L52,12 L52,0 Z"></path>
+            <path d="M58,0 L61,0 L61,2 L58,2 L58,0 Z M58,4 L61,4 L61,12 L58,12 L58,4 Z"></path>
+            <path d="M64,0 L67,0 L67,12 L64,12 L64,0 Z"></path>
+            <path d="M70,0 L73,0 L73,2 L70,2 L70,0 Z M70,4 L73,4 L73,12 L70,12 L70,4 Z"></path>
+            <path d="M76,0 L79,0 L79,12 L76,12 L76,0 Z"></path>
+            <path d="M82,0 L85,0 L85,2 L82,2 L82,0 Z M82,4 L85,4 L85,12 L82,12 L82,4 Z"></path>
+            <path d="M88,0 L91,0 L91,12 L88,12 L88,0 Z"></path>
+            <path d="M94,0 L97,0 L97,2 L94,2 L94,0 Z M94,4 L97,4 L97,12 L94,12 L94,4 Z"></path>
+        </g>
+    </g>
+</svg> 

@@ -1,0 +1,163 @@
+import { Request, Response } from 'express';
+import { smokeShopService } from '../services/smokeShop.service';
+import { IController } from '../types/controller';
+import { AppError } from '../utils/AppError';
+import { logger } from '../utils/logger';
+
+class SmokeShopController implements IController {
+  private static instance: SmokeShopController;
+
+  private constructor() {}
+
+  public static getInstance(): SmokeShopController {
+    if (!SmokeShopController.instance) {
+      SmokeShopController.instance = new SmokeShopController();
+    }
+    return SmokeShopController.instance;
+  }
+
+  // Product methods
+  public getProducts = async (req: Request, res: Response) => {
+    try {
+      const products = await smokeShopService.getProducts();
+      res.json(products);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error fetching products' });
+    }
+  };
+
+  public getProductById = async (req: Request, res: Response) => {
+    try {
+      const product = await smokeShopService.getProductById(req.params.id);
+      res.json(product);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error fetching product' });
+    }
+  };
+
+  public createProduct = async (req: Request, res: Response) => {
+    try {
+      const product = await smokeShopService.createProduct(req.body);
+      res.status(201).json(product);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error creating product' });
+    }
+  };
+
+  public updateProduct = async (req: Request, res: Response) => {
+    try {
+      const product = await smokeShopService.updateProduct(req.params.id, req.body);
+      res.json(product);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error updating product' });
+    }
+  };
+
+  public deleteProduct = async (req: Request, res: Response) => {
+    try {
+      await smokeShopService.deleteProduct(req.params.id);
+      res.status(204).send();
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error deleting product' });
+    }
+  };
+
+  // Order methods
+  public getOrders = async (req: Request, res: Response) => {
+    try {
+      const orders = await smokeShopService.getOrders();
+      res.json(orders);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error fetching orders' });
+    }
+  };
+
+  public getOrderById = async (req: Request, res: Response) => {
+    try {
+      const order = await smokeShopService.getOrderById(req.params.id);
+      res.json(order);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error fetching order' });
+    }
+  };
+
+  public createOrder = async (req: Request, res: Response) => {
+    try {
+      const order = await smokeShopService.createOrder(req.body);
+      res.status(201).json(order);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error creating order' });
+    }
+  };
+
+  public updateOrder = async (req: Request, res: Response) => {
+    try {
+      const order = await smokeShopService.updateOrder(req.params.id, req.body);
+      res.json(order);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error updating order' });
+    }
+  };
+
+  public deleteOrder = async (req: Request, res: Response) => {
+    try {
+      await smokeShopService.deleteOrder(req.params.id);
+      res.status(204).send();
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error deleting order' });
+    }
+  };
+
+  // Category methods
+  public getCategories = async (req: Request, res: Response) => {
+    try {
+      const categories = await smokeShopService.getCategories();
+      res.json(categories);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error fetching categories' });
+    }
+  };
+
+  public createCategory = async (req: Request, res: Response) => {
+    try {
+      const category = await smokeShopService.createCategory(req.body);
+      res.status(201).json(category);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error creating category' });
+    }
+  };
+
+  public updateCategory = async (req: Request, res: Response) => {
+    try {
+      const category = await smokeShopService.updateCategory(req.params.id, req.body);
+      res.json(category);
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error updating category' });
+    }
+  };
+
+  public deleteCategory = async (req: Request, res: Response) => {
+    try {
+      await smokeShopService.deleteCategory(req.params.id);
+      res.status(204).send();
+    } catch (error) {
+      logger.error(error);
+      res.status(500).json({ message: 'Error deleting category' });
+    }
+  };
+}
+
+export const smokeShopController = SmokeShopController.getInstance(); 

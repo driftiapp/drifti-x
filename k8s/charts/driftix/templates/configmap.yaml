@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "driftix.fullname" . }}-config
+  labels:
+    {{- include "driftix.labels" . | nindent 4 }}
+data:
+  NODE_ENV: {{ .Values.global.environment | quote }}
+  APP_URL: {{ printf "http://%s-backend" (include "driftix.fullname" .) | quote }}
+  CORS_ORIGIN: {{ printf "http://%s-frontend" (include "driftix.fullname" .) | quote }}
+  LOG_LEVEL: "info"
+  RATE_LIMIT_WINDOW_MS: "900000"
+  RATE_LIMIT_MAX: "100"
+  EMAIL_HOST: "smtp.gmail.com"
+  EMAIL_PORT: "587"
+  EMAIL_FROM: "noreply@driftix.com"
+  REDIS_URL: {{ printf "redis://%s-redis:6379" (include "driftix.fullname" .) | quote }}
+  MONGODB_URL: {{ printf "mongodb://%s-mongodb:27017/driftix" (include "driftix.fullname" .) | quote }} 

@@ -1,0 +1,99 @@
+import { z } from 'zod';
+import { config as dotenvConfig } from 'dotenv';
+
+// Load environment variables
+dotenvConfig();
+
+// Define environment schema
+const envSchema = z.object({
+  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  PORT: z.string().transform(Number),
+  JWT_SECRET: z.string().min(32),
+  DATABASE_URL: z.string().url(),
+  APP_URL: z.string().url(),
+  EMAIL_HOST: z.string(),
+  EMAIL_PORT: z.string().transform(Number),
+  EMAIL_USER: z.string(),
+  EMAIL_PASS: z.string(),
+  EMAIL_FROM: z.string().email(),
+  RATE_LIMIT_WINDOW_MS: z.string().transform(Number),
+  RATE_LIMIT_MAX: z.string().transform(Number),
+  CORS_ORIGIN: z.string(),
+  LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug']).default('info'),
+  IPINFO_TOKEN: z.string(),
+  SLACK_WEBHOOK_URL: z.string().url(),
+});
+
+// Parse environment variables
+const env = envSchema.parse(process.env);
+
+// Export configuration
+export interface IConfig {
+  env: string;
+  port: number;
+  jwt: {
+    secret: string;
+  };
+  database: {
+    url: string;
+  };
+  app: {
+    url: string;
+  };
+  email: {
+    host: string;
+    port: number;
+    user: string;
+    pass: string;
+    from: string;
+  };
+  rateLimit: {
+    windowMs: number;
+    max: number;
+  };
+  cors: {
+    origin: string;
+  };
+  logLevel: string;
+  ipinfo: {
+    token: string;
+  };
+  slack: {
+    webhookUrl: string;
+  };
+}
+
+export const config: IConfig = {
+  env: env.NODE_ENV,
+  port: env.PORT,
+  jwt: {
+    secret: env.JWT_SECRET,
+  },
+  database: {
+    url: env.DATABASE_URL,
+  },
+  app: {
+    url: env.APP_URL,
+  },
+  email: {
+    host: env.EMAIL_HOST,
+    port: env.EMAIL_PORT,
+    user: env.EMAIL_USER,
+    pass: env.EMAIL_PASS,
+    from: env.EMAIL_FROM,
+  },
+  rateLimit: {
+    windowMs: env.RATE_LIMIT_WINDOW_MS,
+    max: env.RATE_LIMIT_MAX,
+  },
+  cors: {
+    origin: env.CORS_ORIGIN,
+  },
+  logLevel: env.LOG_LEVEL,
+  ipinfo: {
+    token: env.IPINFO_TOKEN,
+  },
+  slack: {
+    webhookUrl: env.SLACK_WEBHOOK_URL,
+  },
+} as const; 

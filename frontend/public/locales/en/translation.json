@@ -1,0 +1,26 @@
+{
+  "welcome": "Welcome to DriftiX",
+  "description": "Your All-in-One Delivery Platform",
+  "getStarted": "Get Started",
+  "learnMore": "Learn More",
+  "features": "Why Choose DriftiX?",
+  "fastDelivery": "Fast Delivery",
+  "fastDeliveryDesc": "Get your deliveries in record time with our optimized routing system",
+  "reliableService": "Reliable Service",
+  "reliableServiceDesc": "Count on us for consistent and dependable delivery services",
+  "wideCoverage": "Wide Coverage",
+  "wideCoverageDesc": "Serving multiple cities with comprehensive delivery options",
+  "readyToStart": "Ready to Get Started?",
+  "joinUsToday": "Join thousands of satisfied customers using DriftiX for their delivery needs",
+  "signUpNow": "Sign Up Now",
+  "downloadApp": {
+    "title": "📲 Download the DriftiX App",
+    "description": "Get the best delivery experience on your phone",
+    "scanToDownload": "Scan QR code to download",
+    "phonePlaceholder": "Enter your phone number",
+    "sendLink": "Send Download Link",
+    "sending": "Sending...",
+    "sent": "Link Sent!",
+    "error": "Failed to send link. Please try again."
+  }
+} 

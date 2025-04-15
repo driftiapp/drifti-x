@@ -1,0 +1,152 @@
+import { ISmokeProduct, ISmokeOrder, ISmokeCategory, OrderStatus } from '../types/smokeShop';
+import { withPerformanceLogging } from '../utils/logger';
+import { AppError } from '../utils/AppError';
+import { ErrorCode } from '../types/error';
+
+class SmokeShopService {
+  private static instance: SmokeShopService;
+  private products: ISmokeProduct[] = [];
+  private orders: ISmokeOrder[] = [];
+  private categories: ISmokeCategory[] = [];
+
+  private constructor() {}
+
+  public static getInstance(): SmokeShopService {
+    if (!SmokeShopService.instance) {
+      SmokeShopService.instance = new SmokeShopService();
+    }
+    return SmokeShopService.instance;
+  }
+
+  // Product methods
+  public getProducts = withPerformanceLogging('getProducts', async () => {
+    return this.products;
+  });
+
+  public getProductById = withPerformanceLogging('getProductById', async (id: string) => {
+    const product = this.products.find(p => p.id === id);
+    if (!product) {
+      throw new AppError('Product not found', ErrorCode.NOT_FOUND);
+    }
+    return product;
+  });
+
+  public createProduct = withPerformanceLogging('createProduct', async (product: Omit<ISmokeProduct, 'id'>) => {
+    const newProduct: ISmokeProduct = {
+      ...product,
+      id: Date.now().toString(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.products.push(newProduct);
+    return newProduct;
+  });
+
+  public updateProduct = withPerformanceLogging('updateProduct', async (id: string, product: Partial<ISmokeProduct>) => {
+    const index = this.products.findIndex(p => p.id === id);
+    if (index === -1) {
+      throw new AppError('Product not found', ErrorCode.NOT_FOUND);
+    }
+    this.products[index] = { 
+      ...this.products[index], 
+      ...product,
+      updatedAt: new Date()
+    };
+    return this.products[index];
+  });
+
+  public deleteProduct = withPerformanceLogging('deleteProduct', async (id: string) => {
+    const index = this.products.findIndex(p => p.id === id);
+    if (index === -1) {
+      throw new AppError('Product not found', ErrorCode.NOT_FOUND);
+    }
+    this.products.splice(index, 1);
+    return true;
+  });
+
+  // Order methods
+  public getOrders = withPerformanceLogging('getOrders', async () => {
+    return this.orders;
+  });
+
+  public getOrderById = withPerformanceLogging('getOrderById', async (id: string) => {
+    const order = this.orders.find(o => o.id === id);
+    if (!order) {
+      throw new AppError('Order not found', ErrorCode.NOT_FOUND);
+    }
+    return order;
+  });
+
+  public createOrder = withPerformanceLogging('createOrder', async (order: Omit<ISmokeOrder, 'id'>) => {
+    const newOrder: ISmokeOrder = {
+      ...order,
+      id: Date.now().toString(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.orders.push(newOrder);
+    return newOrder;
+  });
+
+  public updateOrder = withPerformanceLogging('updateOrder', async (id: string, order: Partial<ISmokeOrder>) => {
+    const index = this.orders.findIndex(o => o.id === id);
+    if (index === -1) {
+      throw new AppError('Order not found', ErrorCode.NOT_FOUND);
+    }
+    this.orders[index] = { 
+      ...this.orders[index], 
+      ...order,
+      updatedAt: new Date()
+    };
+    return this.orders[index];
+  });
+
+  public deleteOrder = withPerformanceLogging('deleteOrder', async (id: string) => {
+    const index = this.orders.findIndex(o => o.id === id);
+    if (index === -1) {
+      throw new AppError('Order not found', ErrorCode.NOT_FOUND);
+    }
+    this.orders.splice(index, 1);
+    return true;
+  });
+
+  // Category methods
+  public getCategories = withPerformanceLogging('getCategories', async () => {
+    return this.categories;
+  });
+
+  public createCategory = withPerformanceLogging('createCategory', async (category: Omit<ISmokeCategory, 'id'>) => {
+    const newCategory: ISmokeCategory = {
+      ...category,
+      id: Date.now().toString(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.categories.push(newCategory);
+    return newCategory;
+  });
+
+  public updateCategory = withPerformanceLogging('updateCategory', async (id: string, category: Partial<ISmokeCategory>) => {
+    const index = this.categories.findIndex(c => c.id === id);
+    if (index === -1) {
+      throw new AppError('Category not found', ErrorCode.NOT_FOUND);
+    }
+    this.categories[index] = { 
+      ...this.categories[index], 
+      ...category,
+      updatedAt: new Date()
+    };
+    return this.categories[index];
+  });
+
+  public deleteCategory = withPerformanceLogging('deleteCategory', async (id: string) => {
+    const index = this.categories.findIndex(c => c.id === id);
+    if (index === -1) {
+      throw new AppError('Category not found', ErrorCode.NOT_FOUND);
+    }
+    this.categories.splice(index, 1);
+    return true;
+  });
+}
+
+export const smokeShopService = SmokeShopService.getInstance(); 
